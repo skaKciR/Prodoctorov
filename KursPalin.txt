@@ -1,0 +1,119 @@
+using System;
+using System.Diagnostics;
+using System.Text;
+namespace Kurs
+{
+ class Program
+ {
+ public static void FindPal(string s)
+ {
+ int k = 0;
+ string set;
+ int f = s.Length;
+ for (int i = 0; i < f - 1; i++)
+ {
+ for (int j = 2; j < f - i; j++)
+ {
+ set = s.Substring(i, j);
+CheckPal(set);
+k = k + CheckPal(set);
+
+ }
+ }
+ Console.WriteLine("Количество палиндромов в строке:
+"+k);
+ }
+ public static int CheckPal(string s) // Проверка на
+палиндром
+ {
+ int k = 0;
+ int sovp = 0; //количество совпадений
+ int q = s.Length; // длина строки
+ for (int i = 0; i < ((int)(q / 2)); i++)
+ {
+ if (s[i] == s[q - (i + 1)])
+ sovp++;
+ }
+ if (sovp == ((int)(q / 2)))
+ {
+ k++;
+ return k;
+ }
+ else return 0;
+ }
+17
+ public static string ReverseString(string s) // Реверс
+строки
+ {
+ char[] inputarray = s.ToCharArray();
+ Array.Reverse(inputarray);
+ string output = new string(inputarray);
+ return output;
+ }
+ static string Gen(int s,int k)
+ {
+ int b = (s / k); // Длина подстроки
+ int c = b >> 2;
+ if(c>100)
+ c = 100;
+ var rnd = new Random();
+ int y = rnd.Next(1, c+1);
+ var pal = string.Empty;
+ while (y--> 0)
+ {
+ pal += (char)rnd.Next(65, 90);
+ }
+ pal = pal + ReverseString(pal);
+ return (pal);
+ }
+ public static void Main(string[] args)
+ {
+ Console.WriteLine("Введите количество палиндромов");
+ int k= Convert.ToInt32(Console.ReadLine());
+ Console.WriteLine("---------------------------------
+---------------------------------------------");
+ int g =0;
+ for (g = 500; g < 5001; g +=500)
+ {
+ Console.WriteLine("Длина строки: " + g+ "
+cимволов");
+ int s = g;
+ int t = g;
+ string[] a = new string[k];
+ int[] len = new int[k];
+ var rnd = new Random();
+ string str = String.Empty;
+ while (t-- > 0)
+ {
+ str += (char)rnd.Next(65, 90);
+ }
+ int b = (s / k); // Длина подстроки
+ for (int i = 0; i < k; i++)
+ {
+ a[i] = Gen(s, k);
+len[i] = a[i].Length;
+ }
+ int r = 0;
+18
+ for (int i = 0; i < k; i++)
+ {
+ int u = b * r + (b - len[i]);
+ int o = rnd.Next((b * r), u);
+str = str.Remove(o, len[i]);
+str = str.Insert(o, a[i]);
+r++;
+ }
+ Stopwatch stopwatch = new Stopwatch();
+ stopwatch.Start();
+ FindPal(str);
+ stopwatch.Stop();
+ Console.Write("Время,затраченное на поиск:");
+
+Console.WriteLine((stopwatch.ElapsedMilliseconds) + "мс");
+ Console.WriteLine("-----------------------------
+-------------------------------------------------");
+ }
+ Console.ReadKey();
+ }
+ }
+}
